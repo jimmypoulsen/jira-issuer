@@ -1,8 +1,9 @@
+require 'dotenv/load'
 require 'faraday'
 
 # Following variables are set in the workflow's environment variables
-username = $JIRA_USERNAME
-api_token = $JIRA_API_TOKEN
+username = ENV['JIRA_USERNAME']
+api_token = ENV['JIRA_API_TOKEN']
 
 p "username: #{username}"
 p "api_token: #{api_token}"
