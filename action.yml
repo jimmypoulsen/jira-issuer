@@ -1,0 +1,12 @@
+name: 'GH issues to Jira issues'
+description: 'Create issue in Jira when a new issue is created in GitHub'
+author: 'jimmy@poulsen.dk'
+branding:
+  icon: filter
+  color: red
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        bundle exec ruby run.rb
+      shell: bash
