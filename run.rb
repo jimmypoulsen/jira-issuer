@@ -4,6 +4,9 @@ require 'faraday'
 username = $JIRA_USERNAME
 api_token = $JIRA_API_TOKEN
 
+p "username: #{username}"
+p "api_token: #{api_token}"
+
 conn = Faraday.new(
   url: 'https://lexly.atlassian.net/',
   headers: { 'Content-Type' => 'application/json' },
@@ -56,7 +59,9 @@ atrs = {
   }
 }
 
-conn.post do |req|
+response = conn.post do |req|
   req.url '/rest/api/3/issue'
   req.body = atrs.to_json
 end
+
+p response
