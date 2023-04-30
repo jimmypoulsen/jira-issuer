@@ -14,7 +14,7 @@ api_token = ENV['JIRA_API_TOKEN']
 github_link_custom_field_id = '10157'
 github_id_custom_field_id = '10158'
 
-issue_id = ENV['ISSUE_ID']
+issue_number = ENV['ISSUE_NUMBER']
 issue_title = ENV['ISSUE_TITLE']
 issue_body = ENV['ISSUE_BODY']
 issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
@@ -36,7 +36,7 @@ issuetype_key = issuetypes.keys.find do |key|
   end.include?(key.to_s)
 end
 
-issuetype_id = issuetypes[issuetype_key || nil]
+issuetype_id = issuetypes[issuetype_key || :task]
 
 conn = Faraday.new(
   url: 'https://lexly.atlassian.net/',
@@ -65,7 +65,7 @@ atrs = {
       "id": issuetype_id
     },
     "customfield_#{github_link_custom_field_id}": issue_url,
-    "customfield_#{github_id_custom_field_id}": issue_id.to_i,
+    "customfield_#{github_id_custom_field_id}": issue_number.to_i,
     "summary": issue_title,
     "description": {
       "content": [
