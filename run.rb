@@ -11,8 +11,8 @@ require 'faraday'
 # Following variables are set in the workflow's environment variables
 username = ENV['JIRA_USERNAME']
 api_token = ENV['JIRA_API_TOKEN']
-github_id_custom_field_id = '10156'
 github_link_custom_field_id = '10157'
+github_id_custom_field_id = '10158'
 
 issue_id = ENV['ISSUE_ID']
 issue_title = ENV['ISSUE_TITLE']
@@ -65,7 +65,7 @@ atrs = {
       "id": issuetype_id
     },
     "customfield_#{github_link_custom_field_id}": issue_url,
-    "customfield_#{github_id_custom_field_id}": issue_id.to_s,
+    "customfield_#{github_id_custom_field_id}": issue_id.to_i,
     "summary": issue_title,
     "description": {
       "content": [
