@@ -10,6 +10,9 @@ issue_body = ENV['ISSUE_BODY']
 issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
 issue_url = ENV['ISSUE_URL']
 
+p "issue_labels: #{issue_labels}"
+p "issuetype_id: #{issuetype_id}"
+
 issuetypes = {
   bug: "10400",
   epic: "10401",
@@ -20,14 +23,11 @@ issuetypes = {
 # assign issuetype where issue_label's name string matches issuetype's key
 issuetype_key = issuetypes.keys.find do |key|
   issue_labels.map do |label|
-    label[:name].gsub('type: ', '')
+    label['name'].gsub('type: ', '')
   end.include?(key.to_s)
 end
 
 issuetype_id = issuetypes[issuetype_key || nil]
-
-p "issue_labels: #{issue_labels}"
-p "issuetype_id: #{issuetype_id}"
 
 # conn = Faraday.new(
 #   url: 'https://lexly.atlassian.net/',
