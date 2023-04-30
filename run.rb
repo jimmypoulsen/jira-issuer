@@ -1,6 +1,8 @@
 # MISSING ENV VARS:
 # - JIRA_SITE
-# - JIRA PROJECT KEY
+# - JIRA_PROJECT_KEY
+# - JIRA_GITHUB_ID_CUSTOM_FIELD_ID (10156)
+# - JIRA_GITHUB_LINK_CUSTOM_FIELD_ID (10157)
 
 require 'dotenv/load'
 require 'json'
@@ -9,6 +11,10 @@ require 'faraday'
 # Following variables are set in the workflow's environment variables
 username = ENV['JIRA_USERNAME']
 api_token = ENV['JIRA_API_TOKEN']
+github_id_custom_field_id = '10156'
+github_link_custom_field_id = '10157'
+
+issue_id = ENV['ISSUE_ID']
 issue_title = ENV['ISSUE_TITLE']
 issue_body = ENV['ISSUE_BODY']
 issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
@@ -58,6 +64,8 @@ atrs = {
     "issuetype": {
       "id": issuetype_id
     },
+    "customfield_#{github_id_custom_field_id}": issue_id.to_s,
+    "customfield_#{github_link_custom_field_id}": issue_url,
     "summary": issue_title,
     "description": {
       "content": [
