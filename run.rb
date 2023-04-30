@@ -1,9 +1,3 @@
-# MISSING ENV VARS:
-# - JIRA_SITE
-# - JIRA_PROJECT_KEY
-# - JIRA_GITHUB_LINK_CUSTOM_FIELD_ID (10157)
-# - JIRA_GITHUB_ID_CUSTOM_FIELD_ID (10158)
-
 require 'dotenv/load'
 require 'json'
 require 'faraday'
@@ -11,8 +5,10 @@ require 'faraday'
 # Following variables are set in the workflow's environment variables
 username = ENV['JIRA_USERNAME']
 api_token = ENV['JIRA_API_TOKEN']
-github_link_custom_field_id = '10157'
-github_id_custom_field_id = '10158'
+jira_site = ENV['JIRA_SITE']
+jira_project_key = ENV['JIRA_PROJECT_KEY']
+github_link_custom_field_id = ENV['JIRA_GITHUB_LINK_CUSTOM_FIELD_ID']
+github_id_custom_field_id = ENV['JIRA_GITHUB_ID_CUSTOM_FIELD_ID']
 
 issue_number = ENV['ISSUE_NUMBER']
 issue_title = ENV['ISSUE_TITLE']
@@ -39,7 +35,7 @@ end
 issuetype_id = issuetypes[issuetype_key || :task]
 
 conn = Faraday.new(
-  url: 'https://lexly.atlassian.net/',
+  url: jira_site,
   headers: { 'Content-Type' => 'application/json' },
   request: { timeout: 120 }
 ) do |faraday|
@@ -49,7 +45,7 @@ end
 options = {
   username: username,
   password: api_token,
-  site: 'https://lexly.atlassian.net/',
+  site: jira_site,
   context_path: '',
   auth_type: :basic,
   read_timeout: 120,
@@ -59,7 +55,7 @@ options = {
 atrs = {
   "fields": {
     "project": {
-      "key": "CORE"
+      "key": jira_project_key
     },
     "issuetype": {
       "id": issuetype_id
