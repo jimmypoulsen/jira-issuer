@@ -1,8 +1,8 @@
 # MISSING ENV VARS:
 # - JIRA_SITE
 # - JIRA_PROJECT_KEY
-# - JIRA_GITHUB_ID_CUSTOM_FIELD_ID (10156)
 # - JIRA_GITHUB_LINK_CUSTOM_FIELD_ID (10157)
+# - JIRA_GITHUB_ID_CUSTOM_FIELD_ID (10158)
 
 require 'dotenv/load'
 require 'json'
@@ -64,8 +64,8 @@ atrs = {
     "issuetype": {
       "id": issuetype_id
     },
-    "customfield_#{github_id_custom_field_id}": issue_id.to_s,
     "customfield_#{github_link_custom_field_id}": issue_url,
+    "customfield_#{github_id_custom_field_id}": issue_id.to_s,
     "summary": issue_title,
     "description": {
       "content": [
