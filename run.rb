@@ -11,7 +11,6 @@ issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
 issue_url = ENV['ISSUE_URL']
 
 p "issue_labels: #{issue_labels}"
-p "issuetype_id: #{issuetype_id}"
 
 issuetypes = {
   bug: "10400",
@@ -28,6 +27,8 @@ issuetype_key = issuetypes.keys.find do |key|
 end
 
 issuetype_id = issuetypes[issuetype_key || nil]
+
+p "issuetype_id: #{issuetype_id}"
 
 # conn = Faraday.new(
 #   url: 'https://lexly.atlassian.net/',
