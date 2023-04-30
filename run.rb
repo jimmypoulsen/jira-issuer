@@ -1,3 +1,7 @@
+# MISSING ENV VARS:
+# - JIRA_SITE
+# - JIRA PROJECT KEY
+
 require 'dotenv/load'
 require 'json'
 require 'faraday'
@@ -10,7 +14,7 @@ issue_body = ENV['ISSUE_BODY']
 issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
 issue_url = ENV['ISSUE_URL']
 
-p "issue_labels: #{issue_labels}"
+p "issue_body: #{issue_body}"
 
 issuetypes = {
   bug: "10400",
@@ -28,56 +32,54 @@ end
 
 issuetype_id = issuetypes[issuetype_key || nil]
 
-p "issuetype_id: #{issuetype_id}"
+conn = Faraday.new(
+  url: 'https://lexly.atlassian.net/',
+  headers: { 'Content-Type' => 'application/json' },
+  request: { timeout: 120 }
+) do |faraday|
+  faraday.request :authorization, :basic, username, api_token
+end
 
-# conn = Faraday.new(
-#   url: 'https://lexly.atlassian.net/',
-#   headers: { 'Content-Type' => 'application/json' },
-#   request: { timeout: 120 }
-# ) do |faraday|
-#   faraday.request :authorization, :basic, username, api_token
-# end
+options = {
+  username: username,
+  password: api_token,
+  site: 'https://lexly.atlassian.net/',
+  context_path: '',
+  auth_type: :basic,
+  read_timeout: 120,
+}
 
-# options = {
-#   username: username,
-#   password: api_token,
-#   site: 'https://lexly.atlassian.net/',
-#   context_path: '',
-#   auth_type: :basic,
-#   read_timeout: 120,
-# }
+# Create issue
+atrs = {
+  "fields": {
+    "project": {
+      "key": "CORE"
+    },
+    "issuetype": {
+      "id": issuetype_id
+    },
+    "summary": issue_title,
+    "description": {
+      "content": [
+        {
+          "content": [
+            {
+              "text": issue_body,
+              "type": "text"
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "type": "doc",
+      "version": 1
+    }
+  }
+}
 
-# # Create issue
-# atrs = {
-#   "fields": {
-#     "project": {
-#       "key": "CORE"
-#     },
-#     "issuetype": {
-#       "id": "10400"
-#     },
-#     "summary": "This is a test issue xD",
-#     "description": {
-#       "content": [
-#         {
-#           "content": [
-#             {
-#               "text": "This is a test issue",
-#               "type": "text"
-#             }
-#           ],
-#           "type": "paragraph"
-#         }
-#       ],
-#       "type": "doc",
-#       "version": 1
-#     }
-#   }
-# }
+response = conn.post do |req|
+  req.url '/rest/api/3/issue'
+  req.body = atrs.to_json
+end
 
-# response = conn.post do |req|
-#   req.url '/rest/api/3/issue'
-#   req.body = atrs.to_json
-# end
-
-# p response
+p response
