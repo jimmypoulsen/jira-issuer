@@ -16,8 +16,6 @@ issue_body = ENV['ISSUE_BODY']
 issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
 issue_url = ENV['ISSUE_URL']
 
-p "issue_body: #{issue_body}"
-
 issuetypes = {
   bug: "10400",
   epic: "10401",
