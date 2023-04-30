@@ -1,4 +1,5 @@
 require 'dotenv/load'
+require 'json'
 require 'faraday'
 
 # Following variables are set in the workflow's environment variables
@@ -6,15 +7,27 @@ username = ENV['JIRA_USERNAME']
 api_token = ENV['JIRA_API_TOKEN']
 issue_title = ENV['ISSUE_TITLE']
 issue_body = ENV['ISSUE_BODY']
-issue_labels = ENV['ISSUE_LABELS']
+issue_labels = JSON.parse(ENV['ISSUE_LABELS'])
 issue_url = ENV['ISSUE_URL']
 
-p "username: #{username}"
-p "api_token: #{api_token}"
-p "issue_title: #{issue_title}"
-p "issue_body: #{issue_body}"
+issuetypes = {
+  bug: "10400",
+  epic: "10401",
+  feature: "10398",
+  task: "10399",
+}
+
+# assign issuetype where issue_label's name string matches issuetype's key
+issuetype_key = issuetypes.keys.find do |key|
+  issue_labels.map do |label|
+    label[:name].gsub('type: ', '')
+  end.include?(key.to_s)
+end
+
+issuetype_id = issuetypes[issuetype_key || nil]
+
 p "issue_labels: #{issue_labels}"
-p "issue_url: #{issue_url}"
+p "issuetype_id: #{issuetype_id}"
 
 # conn = Faraday.new(
 #   url: 'https://lexly.atlassian.net/',
@@ -31,13 +44,6 @@ p "issue_url: #{issue_url}"
 #   context_path: '',
 #   auth_type: :basic,
 #   read_timeout: 120,
-# }
-
-# issuetypes = {
-#   bug: "10400",
-#   epic: "10401",
-#   feature: "10398",
-#   task: "10399",
 # }
 
 # # Create issue
