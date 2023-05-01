@@ -1,4 +1,4 @@
-name: 'Jira issuer'
+name: 'Jira Issuer'
 description: 'Create issue in Jira when a new issue is created in GitHub'
 author: 'jimmy@poulsen.dk'
 branding:
