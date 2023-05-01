@@ -19,14 +19,14 @@ jobs:
       - name: Checkout to action
         uses: actions/checkout@v2.4.0
         with:
-          repository: 'Legal-Hero/jira-issuer'
+          repository: 'jimmypoulsen/jira-relay'
           ref: 'v1.0.13'
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Create Jira issue
-        uses: Legal-Hero/jira-issuer@v1.0.13
+        uses: jimmypoulsen/jira-relay@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
