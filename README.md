@@ -1,3 +1,6 @@
+# Introduction
+This code is shit. I admit it. However, please acknowledge the fact that it was written in less than 45 minutes and it **works**.
+
 # TO DO
 - [ ] Fetch issuetypes from Jira instead of defining them in run.rb
 
